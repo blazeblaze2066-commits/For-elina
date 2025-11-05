@@ -1,0 +1,54 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>I Love You</title>
+  <style>
+    :root{--bg1:#ff9a9e;--bg2:#fad0c4;--accent:#ff4060}
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    body{display:grid;place-items:center;background:linear-gradient(135deg,var(--bg1),var(--bg2));}
+    .card{width:min(820px,90vw);height:min(520px,78vh);background:rgba(255,255,255,0.15);backdrop-filter:blur(6px);border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,0.12);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px;padding:28px}
+    h1{font-size:clamp(36px,8vw,96px);margin:0;color:#fff;text-shadow:0 6px 18px rgba(0,0,0,0.18);letter-spacing:2px;display:flex;align-items:center;gap:12px}
+    .heart{width:1.05em;height:1.05em;transform-origin:center;animation:pulse 1s infinite ease-in-out}
+    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
+    p{color:rgba(255,255,255,0.95);margin:0;font-size:clamp(14px,2.4vw,20px)}
+    .btn{margin-top:8px;padding:10px 18px;border-radius:999px;border:0;background:rgba(255,255,255,0.12);color:#fff;cursor:pointer;font-weight:600}
+    .sparkles{position:absolute;inset:0;pointer-events:none}
+    .sparkle{position:absolute;width:8px;height:8px;border-radius:50%;opacity:0;transform:translateY(0) scale(0.6);animation:fall 2000ms linear infinite}
+    @keyframes fall{0%{opacity:1;transform:translateY(-10vh) scale(0.6)}80%{opacity:1}100%{opacity:0;transform:translateY(120vh) scale(0.2)} }
+    footer{position:fixed;left:12px;bottom:12px;color:rgba(255,255,255,0.7);font-size:12px}
+  </style>
+</head>
+<body>
+  <div class="card" role="main">
+    <h1 aria-live="polite"><svg class="heart" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7-4.58-9.2-7.04C-0.26 9.9 3.28 4 8.5 5.6 10.38 6.2 12 8 12 8s1.62-1.8 3.5-2.4C20.72 4 24.26 9.9 21.2 13.96 19 16.42 12 21 12 21z" fill="#fff" opacity="0.95"/></svg> I love you</h1>
+    <p>Just open this file in a browser — the message appears right away. ❤️</p>
+    <button class="btn" id="surprise">Toggle effect</button>
+  </div>  <div class="sparkles" id="sparkles"></div>
+  <footer>Made with 💖</footer>  <script>
+    // Create gentle random sparkles behind the card
+    const sparkles = document.getElementById('sparkles');
+    const colors = ['#fff','#ffd8e0','#ffe6f0','#fff3f6'];
+    function makeSparkle(){
+      const s = document.createElement('div');
+      s.className = 'sparkle';
+      const left = Math.random()*100;
+      s.style.left = left + 'vw';
+      s.style.background = colors[Math.floor(Math.random()*colors.length)];
+      s.style.animationDuration = (1500 + Math.random()*2000) + 'ms';
+      s.style.width = s.style.height = (6 + Math.random()*12) + 'px';
+      sparkles.appendChild(s);
+      setTimeout(()=> s.remove(), 4000);
+    }
+    // make a few every 250ms
+    let sparkleInterval = setInterval(makeSparkle, 250);
+
+    // Button toggles the sparkle effect
+    document.getElementById('surprise').addEventListener('click', ()=>{
+      if (sparkleInterval){ clearInterval(sparkleInterval); sparkleInterval = null; event.target.textContent='Turn on effect'; }
+      else { sparkleInterval = setInterval(makeSparkle,250); event.target.textContent='Turn off effect'; }
+    });
+  </script></body>
+</html>
